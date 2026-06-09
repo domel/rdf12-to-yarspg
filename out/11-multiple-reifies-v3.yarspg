@@ -1,0 +1,17 @@
+# Nodes
+(cheese {"IRI"})
+(claim1 {"BNode"})
+(claim2 {"BNode"})
+(moon {"IRI"})
+(source1 {"IRI"})
+(source2 {"IRI"})
+(tt_1 {"TripleTerm"}["tripleterm_id": "tt_1"])
+(tt_2 {"TripleTerm"}["tripleterm_id": "tt_2"])
+
+# Edges
+(claim1)-(e1 {"generatedBy"})->(source1)
+(claim2)-(e2 {"generatedBy"})->(source2)
+(moon)-(e3 {"made_of"}["in": "tt_1"])->(cheese)
+(claim1)-(e4 {"reifies"})->(tt_1)
+(moon)-(e5 {"made_of"}["in": "tt_2"])->(cheese)
+(claim2)-(e6 {"reifies"})->(tt_2)

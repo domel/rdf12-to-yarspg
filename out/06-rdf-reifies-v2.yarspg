@@ -1,0 +1,10 @@
+# Nodes
+(basketball {"IRI"})
+(bob {"IRI"}["reference_id": "bob"])
+(cheese {"IRI"})
+(moon {"IRI"})
+
+# Edges
+(moon)-(e1 {"made_of"}["asserted": "false", "reference_property": "reifies", "references": "_:claim1"])->(cheese)
+(moon)-(e2 {"made_of"}["asserted": "false", "reference_property": "said", "references": "bob"])->(cheese)
+(bob)-(e3 {"played"})->(basketball)

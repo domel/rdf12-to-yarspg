@@ -1,0 +1,23 @@
+# Nodes
+(alice {"IRI"})
+(bob {"IRI"})
+(genid0 {"BNode"})
+(genid1 {"BNode"})
+(lit_1 {"Literal"}["datatype": "xsd:decimal", "value": "0.9"])
+(pasta {"IRI"})
+(pizza {"IRI"})
+(survey1 {"IRI"})
+(survey2 {"IRI"})
+(tt_1 {"TripleTerm"}["tripleterm_id": "tt_1"])
+(tt_2 {"TripleTerm"}["tripleterm_id": "tt_2"])
+
+# Edges
+(bob)-(e1 {"likes"})->(pizza)
+(bob)-(e2 {"likes"}["in": "tt_1"])->(pizza)
+(genid0)-(e3 {"reifies"})->(tt_1)
+(genid0)-(e4 {"certainty"})->(lit_1)
+(genid0)-(e5 {"source"})->(survey1)
+(alice)-(e6 {"likes"})->(pasta)
+(alice)-(e7 {"likes"}["in": "tt_2"])->(pasta)
+(genid1)-(e8 {"reifies"})->(tt_2)
+(genid1)-(e9 {"source"})->(survey2)

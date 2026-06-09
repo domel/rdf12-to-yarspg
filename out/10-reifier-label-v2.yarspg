@@ -1,0 +1,10 @@
+# Nodes
+(cheese {"IRI"})
+(label {"IRI"}["reference_id": "label"])
+(moon {"IRI"})
+(x {"IRI"}["reference_id": "x"])
+
+# Edges
+(moon)-(e1 {"made_of"}["asserted": "false", "reference_property": "reifies", "references": "label"])->(cheese)
+(moon)-(e2 {"made_of"}["asserted": "false", "reference_property": "y", "references": "x"])->(cheese)
+(moon)-(e3 {"made_of"}["asserted": "false", "reference_property": "confidence", "references": "0.8"])->(cheese)

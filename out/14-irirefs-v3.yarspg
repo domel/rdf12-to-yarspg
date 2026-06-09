@@ -1,0 +1,8 @@
+# Nodes
+(bob {"IRI"})
+(ex_alice {"IRI"})
+(ex_bob {"IRI"})
+
+# Edges
+(ex_bob)-(e1 {"ex:knows"})->(ex_alice)
+(ex_bob)-(e2 {"ex:homepage"})->(bob)

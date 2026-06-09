@@ -1,0 +1,13 @@
+# Nodes
+(cheese {"IRI"})
+(label {"IRI"})
+(lit_1 {"Literal"}["datatype": "xsd:decimal", "value": "0.8"])
+(moon {"IRI"})
+(tt_1 {"TripleTerm"}["tripleterm_id": "tt_1"])
+(x {"IRI"})
+
+# Edges
+(moon)-(e1 {"made_of"}["in": "tt_1"])->(cheese)
+(label)-(e2 {"reifies"})->(tt_1)
+(x)-(e3 {"y"})->(label)
+(label)-(e4 {"confidence"})->(lit_1)

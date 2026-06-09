@@ -1,0 +1,14 @@
+# Nodes
+(Article {"IRI"})
+(alice {"IRI"})
+(bob {"IRI"})
+(journal1 {"IRI"})
+(lit_1 {"Literal"}["datatype": "xsd:string", "value": "Property Graph Serialization"])
+(paper1 {"IRI"})
+
+# Edges
+(paper1)-(e1 {"type"})->(Article)
+(paper1)-(e2 {"title"})->(lit_1)
+(paper1)-(e3 {"author"})->(alice)
+(paper1)-(e4 {"author"})->(bob)
+(paper1)-(e5 {"publishedIn"})->(journal1)

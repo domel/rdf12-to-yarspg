@@ -1,0 +1,15 @@
+# Nodes
+(Warsaw {"IRI"})
+(alice {"IRI"})
+(genid0 {"BNode"})
+(lit_1 {"Literal"}["datatype": "xsd:string", "value": "Main Street"])
+(lit_2 {"Literal"}["datatype": "xsd:integer", "value": "10"])
+(sensorA {"IRI"})
+(source1 {"BNode"})
+
+# Edges
+(genid0)-(e1 {"street"})->(lit_1)
+(genid0)-(e2 {"number"})->(lit_2)
+(genid0)-(e3 {"city"})->(Warsaw)
+(alice)-(e4 {"address"})->(genid0)
+(source1)-(e5 {"generatedBy"})->(sensorA)

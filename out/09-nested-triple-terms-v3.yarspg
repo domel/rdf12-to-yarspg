@@ -1,0 +1,15 @@
+# Nodes
+(a {"IRI"})
+(o3 {"IRI"})
+(s1 {"IRI"})
+(s2 {"IRI"})
+(s3 {"IRI"})
+(tt_1 {"TripleTerm"}["tripleterm_id": "tt_1"])
+(tt_2 {"TripleTerm"}["tripleterm_id": "tt_2"])
+(tt_3 {"TripleTerm"}["tripleterm_id": "tt_3"])
+
+# Edges
+(s3)-(e1 {"p3"}["in": "tt_3"])->(o3)
+(s2)-(e2 {"p2"}["in": "tt_2"])->(tt_3)
+(s1)-(e3 {"p1"}["in": "tt_1"])->(tt_2)
+(a)-(e4 {"b"})->(tt_1)

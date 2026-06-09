@@ -1,0 +1,13 @@
+# Nodes
+(alice {"IRI"})
+(bob {"IRI"})
+(cheese {"IRI"})
+(moon {"IRI"})
+(ttref_tt_1 {"TripleTermRef"}["in": "tt_1"])
+(ttref_tt_2 {"TripleTermRef"}["in": "tt_2"])
+
+# Edges
+(moon)-(e1 {"made_of"}["asserted": "false", "tripleterm_id": "tt_1"])->(cheese)
+(bob)-(e2 {"said"})->(ttref_tt_1)
+(moon)-(e3 {"made_of"}["asserted": "false", "tripleterm_id": "tt_2"])->(cheese)
+(alice)-(e4 {"denied"})->(ttref_tt_2)

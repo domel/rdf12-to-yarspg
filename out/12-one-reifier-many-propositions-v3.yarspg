@@ -1,0 +1,16 @@
+# Nodes
+(bob {"IRI"})
+(cheese {"IRI"})
+(claimSet {"BNode"})
+(moon {"IRI"})
+(popcorn {"IRI"})
+(sun {"IRI"})
+(tt_1 {"TripleTerm"}["tripleterm_id": "tt_1"])
+(tt_2 {"TripleTerm"}["tripleterm_id": "tt_2"])
+
+# Edges
+(bob)-(e1 {"says"})->(claimSet)
+(moon)-(e2 {"made_of"}["in": "tt_1"])->(cheese)
+(claimSet)-(e3 {"reifies"})->(tt_1)
+(sun)-(e4 {"made_of"}["in": "tt_2"])->(popcorn)
+(claimSet)-(e5 {"reifies"})->(tt_2)

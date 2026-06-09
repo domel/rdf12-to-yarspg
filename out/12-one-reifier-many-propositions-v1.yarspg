@@ -1,0 +1,12 @@
+# Nodes
+(bob {"IRI"})
+(cheese {"IRI"})
+(moon {"IRI"})
+(popcorn {"IRI"})
+(statement_claimSet {"Statement"}["references": "_:claimSet"])
+(sun {"IRI"})
+
+# Edges
+(bob)-(e1 {"says"})->(statement_claimSet)
+(moon)-(e2 {"made_of"}["asserted": "false", "reference_id": "_:claimSet"])->(cheese)
+(sun)-(e3 {"made_of"}["asserted": "false", "reference_id": "_:claimSet"])->(popcorn)

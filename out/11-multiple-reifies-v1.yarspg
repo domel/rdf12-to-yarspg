@@ -1,0 +1,13 @@
+# Nodes
+(cheese {"IRI"})
+(moon {"IRI"})
+(source1 {"IRI"})
+(source2 {"IRI"})
+(statement_claim1 {"Statement"}["references": "_:claim1"])
+(statement_claim2 {"Statement"}["references": "_:claim2"])
+
+# Edges
+(statement_claim1)-(e1 {"generatedBy"})->(source1)
+(statement_claim2)-(e2 {"generatedBy"})->(source2)
+(moon)-(e3 {"made_of"}["asserted": "false", "reference_id": "_:claim1"])->(cheese)
+(moon)-(e4 {"made_of"}["asserted": "false", "reference_id": "_:claim2"])->(cheese)

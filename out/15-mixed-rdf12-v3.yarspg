@@ -1,0 +1,19 @@
+# Nodes
+(asserts {"IRI"})
+(bob {"IRI"})
+(cheese {"IRI"})
+(claim {"BNode"})
+(moon {"IRI"})
+(reifies {"IRI"})
+(report {"IRI"})
+(tt_1 {"TripleTerm"}["tripleterm_id": "tt_1"])
+(tt_2 {"TripleTerm"}["tripleterm_id": "tt_2"])
+
+# Edges
+(asserts)-(e1 {"subPropertyOf"})->(reifies)
+(claim)-(e2 {"said_by"})->(bob)
+(moon)-(e3 {"made_of"}["in": "tt_1"])->(cheese)
+(claim)-(e4 {"asserts"})->(tt_1)
+(moon)-(e5 {"made_of"}["in": "tt_2"])->(cheese)
+(claim)-(e6 {"reifies"})->(tt_2)
+(report)-(e7 {"mentions"})->(claim)

@@ -1,0 +1,16 @@
+# Nodes
+(bob {"IRI"})
+(lit_1 {"Literal"}["datatype": "xsd:string", "lang": "en", "value": "Bob"])
+(lit_2 {"Literal"}["datatype": "xsd:integer", "value": "42"])
+(lit_3 {"Literal"}["datatype": "xsd:decimal", "value": "1.82"])
+(lit_4 {"Literal"}["datatype": "xsd:double", "value": "7.5e1"])
+(lit_5 {"Literal"}["datatype": "xsd:boolean", "value": "true"])
+(lit_6 {"Literal"}["datatype": "xsd:date", "value": "1980-05-12"])
+
+# Edges
+(bob)-(e1 {"name"})->(lit_1)
+(bob)-(e2 {"age"})->(lit_2)
+(bob)-(e3 {"height"})->(lit_3)
+(bob)-(e4 {"score"})->(lit_4)
+(bob)-(e5 {"active"})->(lit_5)
+(bob)-(e6 {"born"})->(lit_6)

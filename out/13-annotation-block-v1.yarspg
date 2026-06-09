@@ -1,0 +1,19 @@
+# Nodes
+(alice {"IRI"})
+(bob {"IRI"})
+(lit_1 {"Literal"}["datatype": "xsd:decimal", "value": "0.9"])
+(pasta {"IRI"})
+(pizza {"IRI"})
+(statement_genid0 {"Statement"}["references": "_:genid0"])
+(statement_genid1 {"Statement"}["references": "_:genid1"])
+(survey1 {"IRI"})
+(survey2 {"IRI"})
+
+# Edges
+(bob)-(e1 {"likes"})->(pizza)
+(bob)-(e2 {"likes"}["asserted": "false", "reference_id": "_:genid0"])->(pizza)
+(statement_genid0)-(e3 {"certainty"})->(lit_1)
+(statement_genid0)-(e4 {"source"})->(survey1)
+(alice)-(e5 {"likes"})->(pasta)
+(alice)-(e6 {"likes"}["asserted": "false", "reference_id": "_:genid1"])->(pasta)
+(statement_genid1)-(e7 {"source"})->(survey2)

@@ -1,0 +1,18 @@
+# Nodes
+(asserts {"IRI"})
+(bob {"IRI"})
+(cheese {"IRI"})
+(claim {"BNode"})
+(moon {"IRI"})
+(reifies {"IRI"})
+(report {"IRI"})
+(statement_claim {"Statement"}["references": "_:claim"])
+(ttref_tt_1 {"TripleTermRef"}["in": "tt_1"])
+
+# Edges
+(asserts)-(e1 {"subPropertyOf"})->(reifies)
+(statement_claim)-(e2 {"said_by"})->(bob)
+(moon)-(e3 {"made_of"}["asserted": "false", "tripleterm_id": "tt_1"])->(cheese)
+(claim)-(e4 {"asserts"})->(ttref_tt_1)
+(moon)-(e5 {"made_of"}["asserted": "false", "reference_id": "_:claim"])->(cheese)
+(report)-(e6 {"mentions"})->(statement_claim)

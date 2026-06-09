@@ -1,0 +1,11 @@
+# Nodes
+(cheese {"IRI"})
+(lit_1 {"Literal"}["datatype": "xsd:decimal", "value": "0.8"])
+(moon {"IRI"})
+(statement_label {"Statement"}["references": "label"])
+(x {"IRI"})
+
+# Edges
+(moon)-(e1 {"made_of"}["asserted": "false", "reference_id": "label"])->(cheese)
+(x)-(e2 {"y"})->(statement_label)
+(statement_label)-(e3 {"confidence"})->(lit_1)

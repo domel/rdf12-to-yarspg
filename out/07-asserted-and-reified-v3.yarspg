@@ -1,0 +1,12 @@
+# Nodes
+(bob {"IRI"})
+(cheese {"IRI"})
+(claim1 {"BNode"})
+(moon {"IRI"})
+(tt_1 {"TripleTerm"}["tripleterm_id": "tt_1"])
+
+# Edges
+(moon)-(e1 {"made_of"}["in": "tt_1"])->(cheese)
+(claim1)-(e2 {"reifies"})->(tt_1)
+(bob)-(e3 {"said"})->(claim1)
+(moon)-(e4 {"made_of"})->(cheese)
