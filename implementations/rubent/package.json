@@ -1,0 +1,16 @@
+{
+  "name": "rdf12-to-lpg",
+  "private": true,
+  "version": "1.0.0",
+  "main": "main.js",
+  "scripts": {
+    "start": "node main.js"
+  },
+  "author": "",
+  "license": "MIT",
+  "description": "",
+  "dependencies": {
+    "rdf-parse": "^5.0.0",
+    "rdf-stores": "^2.2.0"
+  }
+}

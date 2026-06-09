@@ -1,0 +1,8 @@
+PREFIX : <http://example.org/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+_:1 :generatedBy :source1 .
+:source1 :hasname "Source 1" .
+_:2 :generatedBy :source2 .
+_:1 rdf:reifies <<( :moon :made_of :cheese )>> .
+_:2 rdf:reifies <<( :moon :made_of :cheese )>> .
