@@ -1,0 +1,9 @@
+@prefix : <http://example.org/> .
+
+:alice :address [
+    :street "Main Street" ;
+    :number 10 ;
+    :city :Warsaw
+] .
+
+_:source1 :generatedBy :sensorA .

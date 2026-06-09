@@ -1,0 +1,4 @@
+@prefix : <http://example.org/> .
+
+:bob :likes :pizza {| :certainty 0.9 ; :source :survey1 |} .
+:alice :likes :pasta {| :source :survey2 |} .

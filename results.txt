@@ -1,0 +1,766 @@
+RDF 1.2 Turtle to YARS-PG conversion results
+=============================================
+
+Each section starts with the source Turtle example, followed by converter commands and YARS-PG outputs for variants 1, 2, and 3.
+
+Example 06 Turtle input: examples/06-rdf-reifies.ttl
+----------------------------------------
+
+  @prefix : <http://example.org/> .
+  @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+  
+  _:claim1 rdf:reifies <<( :moon :made_of :cheese )>> .
+  :bob :said _:claim1 .
+  :bob :played :basketball .
+
+Variant 1
+~~~~~~~~~
+
+Command:
+  python3 turtle_to_yarspg.py --variant 1 examples/06-rdf-reifies.ttl
+
+YARS-PG output:
+
+  # Nodes
+  (basketball {"IRI"})
+  (bob {"IRI"})
+  (cheese {"IRI"})
+  (moon {"IRI"})
+  (statement_claim1 {"Statement"}["references": "_:claim1"])
+  
+  # Edges
+  (moon)-(e1 {"made_of"}["asserted": "false", "reference_id": "_:claim1"])->(cheese)
+  (bob)-(e2 {"said"})->(statement_claim1)
+  (bob)-(e3 {"played"})->(basketball)
+
+Variant 2
+~~~~~~~~~
+
+Command:
+  python3 turtle_to_yarspg.py --variant 2 examples/06-rdf-reifies.ttl
+
+YARS-PG output:
+
+  # Nodes
+  (basketball {"IRI"})
+  (bob {"IRI"}["reference_id": "bob"])
+  (cheese {"IRI"})
+  (moon {"IRI"})
+  
+  # Edges
+  (moon)-(e1 {"made_of"}["asserted": "false", "reference_property": "reifies", "references": "_:claim1"])->(cheese)
+  (moon)-(e2 {"made_of"}["asserted": "false", "reference_property": "said", "references": "bob"])->(cheese)
+  (bob)-(e3 {"played"})->(basketball)
+
+Variant 3
+~~~~~~~~~
+
+Command:
+  python3 turtle_to_yarspg.py --variant 3 examples/06-rdf-reifies.ttl
+
+YARS-PG output:
+
+  # Nodes
+  (basketball {"IRI"})
+  (bob {"IRI"})
+  (cheese {"IRI"})
+  (claim1 {"BNode"})
+  (moon {"IRI"})
+  (tt_1 {"TripleTerm"}["tripleterm_id": "tt_1"])
+  
+  # Edges
+  (moon)-(e1 {"made_of"}["in": "tt_1"])->(cheese)
+  (claim1)-(e2 {"reifies"})->(tt_1)
+  (bob)-(e3 {"said"})->(claim1)
+  (bob)-(e4 {"played"})->(basketball)
+
+
+Example 07 Turtle input: examples/07-asserted-and-reified.ttl
+----------------------------------------
+
+  @prefix : <http://example.org/> .
+  @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+  
+  _:claim1 rdf:reifies <<( :moon :made_of :cheese )>> .
+  :bob :said _:claim1 .
+  :moon :made_of :cheese .
+
+Variant 1
+~~~~~~~~~
+
+Command:
+  python3 turtle_to_yarspg.py --variant 1 examples/07-asserted-and-reified.ttl
+
+YARS-PG output:
+
+  # Nodes
+  (bob {"IRI"})
+  (cheese {"IRI"})
+  (moon {"IRI"})
+  (statement_claim1 {"Statement"}["references": "_:claim1"])
+  
+  # Edges
+  (moon)-(e1 {"made_of"}["asserted": "true", "reference_id": "_:claim1"])->(cheese)
+  (bob)-(e2 {"said"})->(statement_claim1)
+
+Variant 2
+~~~~~~~~~
+
+Command:
+  python3 turtle_to_yarspg.py --variant 2 examples/07-asserted-and-reified.ttl
+
+YARS-PG output:
+
+  # Nodes
+  (bob {"IRI"}["reference_id": "bob"])
+  (cheese {"IRI"})
+  (moon {"IRI"})
+  
+  # Edges
+  (moon)-(e1 {"made_of"}["asserted": "false", "reference_property": "reifies", "references": "_:claim1"])->(cheese)
+  (moon)-(e2 {"made_of"}["asserted": "false", "reference_property": "said", "references": "bob"])->(cheese)
+  (moon)-(e3 {"made_of"})->(cheese)
+
+Variant 3
+~~~~~~~~~
+
+Command:
+  python3 turtle_to_yarspg.py --variant 3 examples/07-asserted-and-reified.ttl
+
+YARS-PG output:
+
+  # Nodes
+  (bob {"IRI"})
+  (cheese {"IRI"})
+  (claim1 {"BNode"})
+  (moon {"IRI"})
+  (tt_1 {"TripleTerm"}["tripleterm_id": "tt_1"])
+  
+  # Edges
+  (moon)-(e1 {"made_of"}["in": "tt_1"])->(cheese)
+  (claim1)-(e2 {"reifies"})->(tt_1)
+  (bob)-(e3 {"said"})->(claim1)
+  (moon)-(e4 {"made_of"})->(cheese)
+
+
+Example 08 Turtle input: examples/08-triple-term-object.ttl
+----------------------------------------
+
+  @prefix : <http://example.org/> .
+  
+  :bob :said <<( :moon :made_of :cheese )>> .
+  :alice :denied <<( :moon :made_of :cheese )>> .
+
+Variant 1
+~~~~~~~~~
+
+Command:
+  python3 turtle_to_yarspg.py --variant 1 examples/08-triple-term-object.ttl
+
+YARS-PG output:
+
+  # Nodes
+  (alice {"IRI"})
+  (bob {"IRI"})
+  (cheese {"IRI"})
+  (moon {"IRI"})
+  (ttref_tt_1 {"TripleTermRef"}["in": "tt_1"])
+  (ttref_tt_2 {"TripleTermRef"}["in": "tt_2"])
+  
+  # Edges
+  (moon)-(e1 {"made_of"}["asserted": "false", "tripleterm_id": "tt_1"])->(cheese)
+  (bob)-(e2 {"said"})->(ttref_tt_1)
+  (moon)-(e3 {"made_of"}["asserted": "false", "tripleterm_id": "tt_2"])->(cheese)
+  (alice)-(e4 {"denied"})->(ttref_tt_2)
+
+Variant 2
+~~~~~~~~~
+
+Command:
+  python3 turtle_to_yarspg.py --variant 2 examples/08-triple-term-object.ttl
+
+YARS-PG output:
+
+  # Nodes
+  (alice {"IRI"}["reference_id": "alice"])
+  (bob {"IRI"}["reference_id": "bob"])
+  (cheese {"IRI"})
+  (moon {"IRI"})
+  
+  # Edges
+  (moon)-(e1 {"made_of"}["asserted": "false", "reference_property": "said", "references": "bob"])->(cheese)
+  (moon)-(e2 {"made_of"}["asserted": "false", "reference_property": "denied", "references": "alice"])->(cheese)
+
+Variant 3
+~~~~~~~~~
+
+Command:
+  python3 turtle_to_yarspg.py --variant 3 examples/08-triple-term-object.ttl
+
+YARS-PG output:
+
+  # Nodes
+  (alice {"IRI"})
+  (bob {"IRI"})
+  (cheese {"IRI"})
+  (moon {"IRI"})
+  (tt_1 {"TripleTerm"}["tripleterm_id": "tt_1"])
+  (tt_2 {"TripleTerm"}["tripleterm_id": "tt_2"])
+  
+  # Edges
+  (moon)-(e1 {"made_of"}["in": "tt_1"])->(cheese)
+  (bob)-(e2 {"said"})->(tt_1)
+  (moon)-(e3 {"made_of"}["in": "tt_2"])->(cheese)
+  (alice)-(e4 {"denied"})->(tt_2)
+
+
+Example 09 Turtle input: examples/09-nested-triple-terms.ttl
+----------------------------------------
+
+  @prefix : <http://example.org/> .
+  
+  :a :b <<(
+      :s1 :p1 <<(
+          :s2 :p2 <<(
+              :s3 :p3 :o3
+          )>>
+      )>>
+  )>> .
+
+Variant 1
+~~~~~~~~~
+
+Command:
+  python3 turtle_to_yarspg.py --variant 1 examples/09-nested-triple-terms.ttl
+
+YARS-PG output:
+
+  # Nodes
+  
+  # Edges
+
+Variant 2
+~~~~~~~~~
+
+Command:
+  python3 turtle_to_yarspg.py --variant 2 examples/09-nested-triple-terms.ttl
+
+YARS-PG output:
+
+  # Nodes
+  (a {"IRI"}["reference_id": "a"])
+  
+  # Edges
+
+Variant 3
+~~~~~~~~~
+
+Command:
+  python3 turtle_to_yarspg.py --variant 3 examples/09-nested-triple-terms.ttl
+
+YARS-PG output:
+
+  # Nodes
+  (a {"IRI"})
+  (o3 {"IRI"})
+  (s1 {"IRI"})
+  (s2 {"IRI"})
+  (s3 {"IRI"})
+  (tt_1 {"TripleTerm"}["tripleterm_id": "tt_1"])
+  (tt_2 {"TripleTerm"}["tripleterm_id": "tt_2"])
+  (tt_3 {"TripleTerm"}["tripleterm_id": "tt_3"])
+  
+  # Edges
+  (s3)-(e1 {"p3"}["in": "tt_3"])->(o3)
+  (s2)-(e2 {"p2"}["in": "tt_2"])->(tt_3)
+  (s1)-(e3 {"p1"}["in": "tt_1"])->(tt_2)
+  (a)-(e4 {"b"})->(tt_1)
+
+
+Example 10 Turtle input: examples/10-reifier-label.ttl
+----------------------------------------
+
+  @prefix : <http://example.org/> .
+  
+  :x :y << :moon :made_of :cheese ~ :label >> .
+  :label :confidence 0.8 .
+
+Variant 1
+~~~~~~~~~
+
+Command:
+  python3 turtle_to_yarspg.py --variant 1 examples/10-reifier-label.ttl
+
+YARS-PG output:
+
+  # Nodes
+  (cheese {"IRI"})
+  (lit_1 {"Literal"}["datatype": "xsd:decimal", "value": "0.8"])
+  (moon {"IRI"})
+  (statement_label {"Statement"}["references": "label"])
+  (x {"IRI"})
+  
+  # Edges
+  (moon)-(e1 {"made_of"}["asserted": "false", "reference_id": "label"])->(cheese)
+  (x)-(e2 {"y"})->(statement_label)
+  (statement_label)-(e3 {"confidence"})->(lit_1)
+
+Variant 2
+~~~~~~~~~
+
+Command:
+  python3 turtle_to_yarspg.py --variant 2 examples/10-reifier-label.ttl
+
+YARS-PG output:
+
+  # Nodes
+  (cheese {"IRI"})
+  (label {"IRI"}["reference_id": "label"])
+  (moon {"IRI"})
+  (x {"IRI"}["reference_id": "x"])
+  
+  # Edges
+  (moon)-(e1 {"made_of"}["asserted": "false", "reference_property": "reifies", "references": "label"])->(cheese)
+  (moon)-(e2 {"made_of"}["asserted": "false", "reference_property": "y", "references": "x"])->(cheese)
+  (moon)-(e3 {"made_of"}["asserted": "false", "reference_property": "confidence", "references": "0.8"])->(cheese)
+
+Variant 3
+~~~~~~~~~
+
+Command:
+  python3 turtle_to_yarspg.py --variant 3 examples/10-reifier-label.ttl
+
+YARS-PG output:
+
+  # Nodes
+  (cheese {"IRI"})
+  (label {"IRI"})
+  (lit_1 {"Literal"}["datatype": "xsd:decimal", "value": "0.8"])
+  (moon {"IRI"})
+  (tt_1 {"TripleTerm"}["tripleterm_id": "tt_1"])
+  (x {"IRI"})
+  
+  # Edges
+  (moon)-(e1 {"made_of"}["in": "tt_1"])->(cheese)
+  (label)-(e2 {"reifies"})->(tt_1)
+  (x)-(e3 {"y"})->(label)
+  (label)-(e4 {"confidence"})->(lit_1)
+
+
+Example 11 Turtle input: examples/11-multiple-reifies.ttl
+----------------------------------------
+
+  @prefix : <http://example.org/> .
+  @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+  
+  _:claim1 :generatedBy :source1 .
+  _:claim2 :generatedBy :source2 .
+  _:claim1 rdf:reifies <<( :moon :made_of :cheese )>> .
+  _:claim2 rdf:reifies <<( :moon :made_of :cheese )>> .
+
+Variant 1
+~~~~~~~~~
+
+Command:
+  python3 turtle_to_yarspg.py --variant 1 examples/11-multiple-reifies.ttl
+
+YARS-PG output:
+
+  # Nodes
+  (cheese {"IRI"})
+  (moon {"IRI"})
+  (source1 {"IRI"})
+  (source2 {"IRI"})
+  (statement_claim1 {"Statement"}["references": "_:claim1"])
+  (statement_claim2 {"Statement"}["references": "_:claim2"])
+  
+  # Edges
+  (statement_claim1)-(e1 {"generatedBy"})->(source1)
+  (statement_claim2)-(e2 {"generatedBy"})->(source2)
+  (moon)-(e3 {"made_of"}["asserted": "false", "reference_id": "_:claim1"])->(cheese)
+  (moon)-(e4 {"made_of"}["asserted": "false", "reference_id": "_:claim2"])->(cheese)
+
+Variant 2
+~~~~~~~~~
+
+Command:
+  python3 turtle_to_yarspg.py --variant 2 examples/11-multiple-reifies.ttl
+
+YARS-PG output:
+
+  # Nodes
+  (cheese {"IRI"})
+  (claim1 {"BNode"})
+  (claim2 {"BNode"})
+  (moon {"IRI"})
+  (source1 {"IRI"}["reference_id": "source1"])
+  (source2 {"IRI"}["reference_id": "source2"])
+  
+  # Edges
+  (moon)-(e1 {"made_of"}["asserted": "false", "reference_property": "generatedBy", "references": "source1"])->(cheese)
+  (claim2)-(e2 {"generatedBy"})->(source2)
+  (moon)-(e3 {"made_of"}["asserted": "false", "reference_property": "reifies", "references": "_:claim1"])->(cheese)
+  (claim1)-(e4 {"generatedBy"})->(source1)
+  (moon)-(e5 {"made_of"}["asserted": "false", "reference_property": "generatedBy", "references": "source2"])->(cheese)
+  (moon)-(e6 {"made_of"}["asserted": "false", "reference_property": "reifies", "references": "_:claim2"])->(cheese)
+
+Variant 3
+~~~~~~~~~
+
+Command:
+  python3 turtle_to_yarspg.py --variant 3 examples/11-multiple-reifies.ttl
+
+YARS-PG output:
+
+  # Nodes
+  (cheese {"IRI"})
+  (claim1 {"BNode"})
+  (claim2 {"BNode"})
+  (moon {"IRI"})
+  (source1 {"IRI"})
+  (source2 {"IRI"})
+  (tt_1 {"TripleTerm"}["tripleterm_id": "tt_1"])
+  (tt_2 {"TripleTerm"}["tripleterm_id": "tt_2"])
+  
+  # Edges
+  (claim1)-(e1 {"generatedBy"})->(source1)
+  (claim2)-(e2 {"generatedBy"})->(source2)
+  (moon)-(e3 {"made_of"}["in": "tt_1"])->(cheese)
+  (claim1)-(e4 {"reifies"})->(tt_1)
+  (moon)-(e5 {"made_of"}["in": "tt_2"])->(cheese)
+  (claim2)-(e6 {"reifies"})->(tt_2)
+
+
+Example 12 Turtle input: examples/12-one-reifier-many-propositions.ttl
+----------------------------------------
+
+  @prefix : <http://example.org/> .
+  @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+  
+  :bob :says _:claimSet .
+  _:claimSet rdf:reifies <<( :moon :made_of :cheese )>> .
+  _:claimSet rdf:reifies <<( :sun :made_of :popcorn )>> .
+
+Variant 1
+~~~~~~~~~
+
+Command:
+  python3 turtle_to_yarspg.py --variant 1 examples/12-one-reifier-many-propositions.ttl
+
+YARS-PG output:
+
+  # Nodes
+  (bob {"IRI"})
+  (cheese {"IRI"})
+  (moon {"IRI"})
+  (popcorn {"IRI"})
+  (statement_claimSet {"Statement"}["references": "_:claimSet"])
+  (sun {"IRI"})
+  
+  # Edges
+  (bob)-(e1 {"says"})->(statement_claimSet)
+  (moon)-(e2 {"made_of"}["asserted": "false", "reference_id": "_:claimSet"])->(cheese)
+  (sun)-(e3 {"made_of"}["asserted": "false", "reference_id": "_:claimSet"])->(popcorn)
+
+Variant 2
+~~~~~~~~~
+
+Command:
+  python3 turtle_to_yarspg.py --variant 2 examples/12-one-reifier-many-propositions.ttl
+
+YARS-PG output:
+
+  # Nodes
+  (bob {"IRI"}["reference_id": "bob"])
+  (cheese {"IRI"})
+  (moon {"IRI"})
+  (popcorn {"IRI"})
+  (sun {"IRI"})
+  
+  # Edges
+  (moon)-(e1 {"made_of"}["asserted": "false", "reference_property": "says", "references": "bob"])->(cheese)
+  (moon)-(e2 {"made_of"}["asserted": "false", "reference_property": "reifies", "references": "_:claimSet"])->(cheese)
+  (moon)-(e3 {"made_of"}["asserted": "false", "reference_property": "reifies", "references": "tt_1"])->(cheese)
+  (sun)-(e4 {"made_of"}["asserted": "false", "reference_property": "says", "references": "bob"])->(popcorn)
+  (sun)-(e5 {"made_of"}["asserted": "false", "reference_property": "reifies", "references": "tt_2"])->(popcorn)
+  (sun)-(e6 {"made_of"}["asserted": "false", "reference_property": "reifies", "references": "_:claimSet"])->(popcorn)
+
+Variant 3
+~~~~~~~~~
+
+Command:
+  python3 turtle_to_yarspg.py --variant 3 examples/12-one-reifier-many-propositions.ttl
+
+YARS-PG output:
+
+  # Nodes
+  (bob {"IRI"})
+  (cheese {"IRI"})
+  (claimSet {"BNode"})
+  (moon {"IRI"})
+  (popcorn {"IRI"})
+  (sun {"IRI"})
+  (tt_1 {"TripleTerm"}["tripleterm_id": "tt_1"])
+  (tt_2 {"TripleTerm"}["tripleterm_id": "tt_2"])
+  
+  # Edges
+  (bob)-(e1 {"says"})->(claimSet)
+  (moon)-(e2 {"made_of"}["in": "tt_1"])->(cheese)
+  (claimSet)-(e3 {"reifies"})->(tt_1)
+  (sun)-(e4 {"made_of"}["in": "tt_2"])->(popcorn)
+  (claimSet)-(e5 {"reifies"})->(tt_2)
+
+
+Example 13 Turtle input: examples/13-annotation-block.ttl
+----------------------------------------
+
+  @prefix : <http://example.org/> .
+  
+  :bob :likes :pizza {| :certainty 0.9 ; :source :survey1 |} .
+  :alice :likes :pasta {| :source :survey2 |} .
+
+Variant 1
+~~~~~~~~~
+
+Command:
+  python3 turtle_to_yarspg.py --variant 1 examples/13-annotation-block.ttl
+
+YARS-PG output:
+
+  # Nodes
+  (alice {"IRI"})
+  (bob {"IRI"})
+  (lit_1 {"Literal"}["datatype": "xsd:decimal", "value": "0.9"])
+  (pasta {"IRI"})
+  (pizza {"IRI"})
+  (statement_genid0 {"Statement"}["references": "_:genid0"])
+  (statement_genid1 {"Statement"}["references": "_:genid1"])
+  (survey1 {"IRI"})
+  (survey2 {"IRI"})
+  
+  # Edges
+  (bob)-(e1 {"likes"})->(pizza)
+  (bob)-(e2 {"likes"}["asserted": "false", "reference_id": "_:genid0"])->(pizza)
+  (statement_genid0)-(e3 {"certainty"})->(lit_1)
+  (statement_genid0)-(e4 {"source"})->(survey1)
+  (alice)-(e5 {"likes"})->(pasta)
+  (alice)-(e6 {"likes"}["asserted": "false", "reference_id": "_:genid1"])->(pasta)
+  (statement_genid1)-(e7 {"source"})->(survey2)
+
+Variant 2
+~~~~~~~~~
+
+Command:
+  python3 turtle_to_yarspg.py --variant 2 examples/13-annotation-block.ttl
+
+YARS-PG output:
+
+  # Nodes
+  (alice {"IRI"})
+  (bob {"IRI"})
+  (genid0 {"BNode"})
+  (genid1 {"BNode"})
+  (lit_1 {"Literal"}["datatype": "xsd:decimal", "value": "0.9"])
+  (pasta {"IRI"})
+  (pizza {"IRI"})
+  (survey1 {"IRI"}["reference_id": "survey1"])
+  (survey2 {"IRI"}["reference_id": "survey2"])
+  
+  # Edges
+  (bob)-(e1 {"likes"})->(pizza)
+  (bob)-(e2 {"likes"}["asserted": "false", "reference_property": "reifies", "references": "_:genid0"])->(pizza)
+  (bob)-(e3 {"likes"}["asserted": "false", "reference_property": "certainty", "references": "0.9"])->(pizza)
+  (bob)-(e4 {"likes"}["asserted": "false", "reference_property": "source", "references": "survey1"])->(pizza)
+  (alice)-(e5 {"likes"})->(pasta)
+  (genid1)-(e6 {"source"})->(survey2)
+  (genid0)-(e7 {"certainty"})->(lit_1)
+  (genid0)-(e8 {"source"})->(survey1)
+  (alice)-(e9 {"likes"}["asserted": "false", "reference_property": "reifies", "references": "_:genid1"])->(pasta)
+  (alice)-(e10 {"likes"}["asserted": "false", "reference_property": "source", "references": "survey2"])->(pasta)
+
+Variant 3
+~~~~~~~~~
+
+Command:
+  python3 turtle_to_yarspg.py --variant 3 examples/13-annotation-block.ttl
+
+YARS-PG output:
+
+  # Nodes
+  (alice {"IRI"})
+  (bob {"IRI"})
+  (genid0 {"BNode"})
+  (genid1 {"BNode"})
+  (lit_1 {"Literal"}["datatype": "xsd:decimal", "value": "0.9"])
+  (pasta {"IRI"})
+  (pizza {"IRI"})
+  (survey1 {"IRI"})
+  (survey2 {"IRI"})
+  (tt_1 {"TripleTerm"}["tripleterm_id": "tt_1"])
+  (tt_2 {"TripleTerm"}["tripleterm_id": "tt_2"])
+  
+  # Edges
+  (bob)-(e1 {"likes"})->(pizza)
+  (bob)-(e2 {"likes"}["in": "tt_1"])->(pizza)
+  (genid0)-(e3 {"reifies"})->(tt_1)
+  (genid0)-(e4 {"certainty"})->(lit_1)
+  (genid0)-(e5 {"source"})->(survey1)
+  (alice)-(e6 {"likes"})->(pasta)
+  (alice)-(e7 {"likes"}["in": "tt_2"])->(pasta)
+  (genid1)-(e8 {"reifies"})->(tt_2)
+  (genid1)-(e9 {"source"})->(survey2)
+
+
+Example 14 Turtle input: examples/14-irirefs.ttl
+----------------------------------------
+
+  PREFIX ex: <http://example.org/>
+  
+  <http://example.org/bob> ex:knows <http://example.org/alice> .
+  <http://example.org/bob> ex:homepage <https://example.net/users/bob> .
+
+Variant 1
+~~~~~~~~~
+
+Command:
+  python3 turtle_to_yarspg.py --variant 1 examples/14-irirefs.ttl
+
+YARS-PG output:
+
+  # Nodes
+  (bob {"IRI"})
+  (ex_alice {"IRI"})
+  (ex_bob {"IRI"})
+  
+  # Edges
+  (ex_bob)-(e1 {"ex:knows"})->(ex_alice)
+  (ex_bob)-(e2 {"ex:homepage"})->(bob)
+
+Variant 2
+~~~~~~~~~
+
+Command:
+  python3 turtle_to_yarspg.py --variant 2 examples/14-irirefs.ttl
+
+YARS-PG output:
+
+  # Nodes
+  (bob {"IRI"})
+  (ex_alice {"IRI"})
+  (ex_bob {"IRI"})
+  
+  # Edges
+  (ex_bob)-(e1 {"ex:knows"})->(ex_alice)
+  (ex_bob)-(e2 {"ex:homepage"})->(bob)
+
+Variant 3
+~~~~~~~~~
+
+Command:
+  python3 turtle_to_yarspg.py --variant 3 examples/14-irirefs.ttl
+
+YARS-PG output:
+
+  # Nodes
+  (bob {"IRI"})
+  (ex_alice {"IRI"})
+  (ex_bob {"IRI"})
+  
+  # Edges
+  (ex_bob)-(e1 {"ex:knows"})->(ex_alice)
+  (ex_bob)-(e2 {"ex:homepage"})->(bob)
+
+
+Example 15 Turtle input: examples/15-mixed-rdf12.ttl
+----------------------------------------
+
+  @prefix : <http://example.org/> .
+  @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+  @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+  
+  :asserts rdfs:subPropertyOf rdf:reifies .
+  _:claim :said_by :bob .
+  _:claim :asserts <<( :moon :made_of :cheese )>> .
+  :report :mentions << :moon :made_of :cheese ~ _:claim >> .
+
+Variant 1
+~~~~~~~~~
+
+Command:
+  python3 turtle_to_yarspg.py --variant 1 examples/15-mixed-rdf12.ttl
+
+YARS-PG output:
+
+  # Nodes
+  (asserts {"IRI"})
+  (bob {"IRI"})
+  (cheese {"IRI"})
+  (claim {"BNode"})
+  (moon {"IRI"})
+  (reifies {"IRI"})
+  (report {"IRI"})
+  (statement_claim {"Statement"}["references": "_:claim"])
+  (ttref_tt_1 {"TripleTermRef"}["in": "tt_1"])
+  
+  # Edges
+  (asserts)-(e1 {"subPropertyOf"})->(reifies)
+  (statement_claim)-(e2 {"said_by"})->(bob)
+  (moon)-(e3 {"made_of"}["asserted": "false", "tripleterm_id": "tt_1"])->(cheese)
+  (claim)-(e4 {"asserts"})->(ttref_tt_1)
+  (moon)-(e5 {"made_of"}["asserted": "false", "reference_id": "_:claim"])->(cheese)
+  (report)-(e6 {"mentions"})->(statement_claim)
+
+Variant 2
+~~~~~~~~~
+
+Command:
+  python3 turtle_to_yarspg.py --variant 2 examples/15-mixed-rdf12.ttl
+
+YARS-PG output:
+
+  # Nodes
+  (asserts {"IRI"})
+  (bob {"IRI"}["reference_id": "bob"])
+  (cheese {"IRI"})
+  (moon {"IRI"})
+  (reifies {"IRI"})
+  (report {"IRI"}["reference_id": "report"])
+  
+  # Edges
+  (asserts)-(e1 {"subPropertyOf"})->(reifies)
+  (moon)-(e2 {"made_of"}["asserted": "false", "reference_property": "said_by", "references": "bob"])->(cheese)
+  (moon)-(e3 {"made_of"}["asserted": "false", "reference_property": "asserts", "references": "_:claim"])->(cheese)
+  (moon)-(e4 {"made_of"}["asserted": "false", "reference_property": "reifies", "references": "tt_1"])->(cheese)
+  (moon)-(e5 {"made_of"}["asserted": "false", "reference_property": "mentions", "references": "report"])->(cheese)
+  (moon)-(e6 {"made_of"}["asserted": "false", "reference_property": "asserts", "references": "tt_2"])->(cheese)
+  (moon)-(e7 {"made_of"}["asserted": "false", "reference_property": "reifies", "references": "_:claim"])->(cheese)
+
+Variant 3
+~~~~~~~~~
+
+Command:
+  python3 turtle_to_yarspg.py --variant 3 examples/15-mixed-rdf12.ttl
+
+YARS-PG output:
+
+  # Nodes
+  (asserts {"IRI"})
+  (bob {"IRI"})
+  (cheese {"IRI"})
+  (claim {"BNode"})
+  (moon {"IRI"})
+  (reifies {"IRI"})
+  (report {"IRI"})
+  (tt_1 {"TripleTerm"}["tripleterm_id": "tt_1"])
+  (tt_2 {"TripleTerm"}["tripleterm_id": "tt_2"])
+  
+  # Edges
+  (asserts)-(e1 {"subPropertyOf"})->(reifies)
+  (claim)-(e2 {"said_by"})->(bob)
+  (moon)-(e3 {"made_of"}["in": "tt_1"])->(cheese)
+  (claim)-(e4 {"asserts"})->(tt_1)
+  (moon)-(e5 {"made_of"}["in": "tt_2"])->(cheese)
+  (claim)-(e6 {"reifies"})->(tt_2)
+  (report)-(e7 {"mentions"})->(claim)
+
+

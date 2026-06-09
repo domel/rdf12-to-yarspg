@@ -1,0 +1,9 @@
+@prefix : <http://example.org/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+:bob :name "Bob"@en ;
+    :age 42 ;
+    :height 1.82 ;
+    :score 7.5e1 ;
+    :active true ;
+    :born "1980-05-12"^^xsd:date .

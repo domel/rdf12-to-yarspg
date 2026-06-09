@@ -1,0 +1,4 @@
+@prefix : <http://example.org/> .
+
+:paper1 :keywords ( "RDF" "YARS-PG" "property graph" ) .
+:alice :coauthors ( :bob :carol :dave ) .

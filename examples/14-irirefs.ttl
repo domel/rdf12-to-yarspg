@@ -1,0 +1,4 @@
+PREFIX ex: <http://example.org/>
+
+<http://example.org/bob> ex:knows <http://example.org/alice> .
+<http://example.org/bob> ex:homepage <https://example.net/users/bob> .

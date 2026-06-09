@@ -1,0 +1,6 @@
+@prefix : <http://example.org/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+
+_:claim1 rdf:reifies <<( :moon :made_of :cheese )>> .
+:bob :said _:claim1 .
+:moon :made_of :cheese .

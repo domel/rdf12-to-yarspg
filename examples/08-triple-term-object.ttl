@@ -1,0 +1,4 @@
+@prefix : <http://example.org/> .
+
+:bob :said <<( :moon :made_of :cheese )>> .
+:alice :denied <<( :moon :made_of :cheese )>> .

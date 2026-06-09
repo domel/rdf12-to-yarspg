@@ -1,0 +1,87 @@
+Wywolania konwertera dla cech RDF 1.2
+=====================================
+
+# Pomoc CLI
+python3 turtle_to_yarspg.py --help
+
+
+1. rdf:reifies z triple term
+----------------------------
+
+python3 turtle_to_yarspg.py --variant 1 examples/06-rdf-reifies.ttl
+python3 turtle_to_yarspg.py --variant 2 examples/06-rdf-reifies.ttl
+python3 turtle_to_yarspg.py --variant 3 examples/06-rdf-reifies.ttl
+
+
+2. Trójka asercyjna i reifikowana jednoczesnie
+----------------------------------------------
+
+python3 turtle_to_yarspg.py --variant 1 examples/07-asserted-and-reified.ttl
+python3 turtle_to_yarspg.py --variant 2 examples/07-asserted-and-reified.ttl
+python3 turtle_to_yarspg.py --variant 3 examples/07-asserted-and-reified.ttl
+
+
+3. Triple term jako obiekt zwyklej trójki
+-----------------------------------------
+
+python3 turtle_to_yarspg.py --variant 2 examples/08-triple-term-object.ttl
+python3 turtle_to_yarspg.py --variant 3 examples/08-triple-term-object.ttl
+
+
+4. Zagniezdzone triple terms
+----------------------------
+
+python3 turtle_to_yarspg.py --variant 3 examples/09-nested-triple-terms.ttl
+
+
+5. Reifier label w skladni << s p o ~ label >>
+----------------------------------------------
+
+python3 turtle_to_yarspg.py --variant 2 examples/10-reifier-label.ttl
+python3 turtle_to_yarspg.py --variant 3 examples/10-reifier-label.ttl
+
+
+6. Wiele reifikatorow dla tej samej propozycji
+----------------------------------------------
+
+python3 turtle_to_yarspg.py --variant 1 examples/11-multiple-reifies.ttl
+python3 turtle_to_yarspg.py --variant 2 examples/11-multiple-reifies.ttl
+python3 turtle_to_yarspg.py --variant 3 examples/11-multiple-reifies.ttl
+
+
+7. Jeden reifikator dla wielu propozycji
+----------------------------------------
+
+python3 turtle_to_yarspg.py --variant 1 examples/12-one-reifier-many-propositions.ttl
+python3 turtle_to_yarspg.py --variant 2 examples/12-one-reifier-many-propositions.ttl
+python3 turtle_to_yarspg.py --variant 3 examples/12-one-reifier-many-propositions.ttl
+
+
+8. Annotation block {| ... |}
+-----------------------------
+
+python3 turtle_to_yarspg.py --variant 2 examples/13-annotation-block.ttl
+python3 turtle_to_yarspg.py --variant 3 examples/13-annotation-block.ttl
+
+
+9. Mieszany przypadek RDF 1.2
+-----------------------------
+
+python3 turtle_to_yarspg.py --variant 1 examples/15-mixed-rdf12.ttl
+python3 turtle_to_yarspg.py --variant 2 examples/15-mixed-rdf12.ttl
+python3 turtle_to_yarspg.py --variant 3 examples/15-mixed-rdf12.ttl
+
+
+10. Zapis wynikow RDF 1.2 do plikow YARS-PG
+-------------------------------------------
+
+python3 turtle_to_yarspg.py --variant 1 examples/06-rdf-reifies.ttl -o out-rdf12-v1.yarspg
+python3 turtle_to_yarspg.py --variant 2 examples/12-one-reifier-many-propositions.ttl -o out-rdf12-v2.yarspg
+python3 turtle_to_yarspg.py --variant 3 examples/09-nested-triple-terms.ttl -o out-rdf12-v3.yarspg
+
+
+11. Odczyt RDF 1.2 ze stdin
+---------------------------
+
+cat examples/10-reifier-label.ttl | python3 turtle_to_yarspg.py --variant 3
+

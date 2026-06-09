@@ -1,0 +1,6 @@
+@prefix : <http://example.org/> .
+
+:paper1 a :Article ;
+    :title "Property Graph Serialization" ;
+    :author :alice, :bob ;
+    :publishedIn :journal1 .

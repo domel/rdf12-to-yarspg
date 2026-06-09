@@ -1,0 +1,4 @@
+@prefix : <http://example.org/> .
+
+:x :y << :moon :made_of :cheese ~ :label >> .
+:label :confidence 0.8 .
